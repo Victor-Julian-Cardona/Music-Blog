@@ -4,4 +4,5 @@ const HomePage = () => {
     )
 }
 
+// I added something
 export default HomePage;

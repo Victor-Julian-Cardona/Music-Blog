@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 
 function BlogForm() {
+    const [key, setKey] = useState(0)
+
     const [formData, setFormData] = useState({
         author: '',
         date: '',
-        songLink: '',
+        link: '',
         text: ''
     });
-
-    const [key, setKey] = useState(0)
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -50,20 +50,21 @@ function BlogForm() {
             </div>
 
             <div>
-                <label>Spotify Search Bar:</label>
-                {/* Spotify Search Bar */}
-                <div style={{ border: '1px solid black', padding: '10px', marginBottom: '10px' }}>
-                    Spotify Search Bar will go here
-                </div>
+            <Link to="/Search">
+                <button type="button">
+                    Search for Song
+                </button>
+            </Link>
+
             </div>
 
             <div>
-                <label htmlFor="songLink">Song Link:</label>
+                <label htmlFor="link">Song Link:</label>
                 <input
                 type="text"
-                id="songLink"
-                name="songLink"
-                value={formData.songLink}
+                id="link"
+                name="link"
+                value={formData.link}
                 onChange={handleChange}
                 />
             </div>

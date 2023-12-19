@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import BlogPostsContext from '../Context';
+
 
 function Navbar() {
+    const posts = useContext(BlogPostsContext);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -15,12 +18,14 @@ function Navbar() {
                 <li><Link to="/about">About</Link></li>
                 <li><Link to="/next">Next</Link></li>
                 <li><Link to="/previous">Previous</Link></li>
-                <li onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
+                <li onClick={toggleDropdown} onMouseLeave={toggleDropdown}>
                     BlogPosts
                     {dropdownOpen && (
-                        <ul style={{ position: 'absolute', backgroundColor: 'white', listStyleType: 'none', padding: '10px' }}>
-                            {/* useEffect with all blogposts */}
-                        </ul>
+                        posts.map(post => (
+                            <div key={post.id}>
+                                <h3>{post.title}</h3>
+                            </div>
+                            ))
                     )}
                 </li>
             </ul>

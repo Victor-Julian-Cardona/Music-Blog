@@ -1,13 +1,14 @@
 import axios from 'axios';
 import { Buffer } from 'buffer';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function SearchBar() {
+function SearchBar({ setSelectedPreviewUrl }) {
 
 const [spotifyApiToken, setSpotifyApiToken] = useState('')
 const [searchTerm, setSearchTerm] = useState('')
 const [searchResults, setSearchResults] = useState([])
-// const [dropdownVisible, setDropdownVisible] = useState(false);
+const navigate = useNavigate();
 
 
 const handleSubmit = (e) => {
@@ -18,10 +19,8 @@ const handleSubmit = (e) => {
     .then((results) => {
         console.log("Search results", results.data)
         setSearchResults(results.data.tracks.items)
-        // setDropdownVisible(true)
     })
     .catch((err) => {
-        // setDropdownVisible(false)
         console.log(err)
     })
 }
@@ -42,6 +41,11 @@ useEffect(() => {
     })
 }, [])
 
+const handleSongSelect = (previewUrl) => {
+    setSelectedPreviewUrl(previewUrl);
+    navigate(-1);
+};
+
 
     return (
         <div>
@@ -56,9 +60,12 @@ useEffect(() => {
         
             <div>
                 {searchResults.map((result, i) => (
-                    <div key={result.id}>
+                    <div className= "searchResults" key={result.id} onClick={() => handleSongSelect(result.preview_url)}>
                         {/* <ReactAudioPlayer src={result.preview_url} controls /> */}
                         <h3>{result.name}</h3>
+                        <h3>By: {result.artists[0].name}</h3>
+                        <h3> Album: {result.album.name}</h3>
+                        <img src = {result.album.images[0].url} width={100} height={100} />
                     </div>
                 ))}
             </div>

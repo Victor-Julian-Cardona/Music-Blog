@@ -1,11 +1,22 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PostsContext from '../Context';
-
 
 function Navbar() {
     const posts = useContext(PostsContext);
+    const { id } = useParams();
     const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const getPrevAndNext = (activeID) => {
+        const sortedPosts = [...posts].sort((a, b) => a.id - b.id);
+        const index = sortedPosts.findIndex(post => post.id === activeID);
+        const prevPost = index > 0 ? sortedPosts[index - 1] : null;
+        const nextPost = index >= 0 && index < sortedPosts.length - 1 ? sortedPosts[index + 1] : null;
+        return { prevPost, nextPost };
+    };
+
+    const currentPostId = id ? parseInt(id, 10) : Math.max(...posts.map(p => p.id));
+    const { prevPost, nextPost } = getPrevAndNext(currentPostId);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -16,17 +27,16 @@ function Navbar() {
             <ul style={{ listStyleType: 'none', display: 'flex', justifyContent: 'space-around' }}>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/about">About</Link></li>
-                <li><Link to="/next">Next</Link></li>
-                <li><Link to="/previous">Previous</Link></li>
-                <li onClick={toggleDropdown} onMouseLeave={toggleDropdown}>
+                {prevPost && <li><Link to={`/post/${prevPost.id}`}>Previous</Link></li>}
+                {nextPost && <li><Link to={`/post/${nextPost.id}`}>Next</Link></li>}
+                <li onClick={toggleDropdown}>
                     BlogPosts
                     {dropdownOpen && (
                         posts.map(post => (
                             <div key={post.id}>
-                                <h3>{post.title}</h3>
-                                <Link to={`/post/${post.id}`}>Read More</Link>
+                                <Link to={`/post/${post.id}`}>{post.title}</Link>
                             </div>
-                            ))
+                        ))
                     )}
                 </li>
             </ul>

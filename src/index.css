@@ -68,7 +68,7 @@ button:focus-visible {
 }
 
 .sidebar {
-  width: 200px;
+  width: 100px;
   position: fixed;
   left: 0;
   top: 0;
@@ -77,6 +77,7 @@ button:focus-visible {
   background-color: #090909;
   display: flex;
   flex-direction: column;
+  padding-top: 10px;
 }
 
 .sidebar button {
@@ -86,4 +87,58 @@ button:focus-visible {
   margin-bottom: 10px;
   background-color: #0a272d;
   cursor: pointer;
+}
+
+.searchResults {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-evenly;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.searchResults :hover {
+  background-color: rgb(63, 12, 51);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: auto;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="date"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
 }

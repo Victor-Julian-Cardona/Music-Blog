@@ -1,14 +1,22 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function BlogForm() {
-    const [key, setKey] = useState(0)
+function BlogForm({ selectedPreviewUrl }) {
+
+    const navigate = useNavigate();
+
+    const previewUrl = selectedPreviewUrl;
+
+    const [key, setKey] = useState(10)
 
     const [formData, setFormData] = useState({
-        author: '',
-        date: '',
-        link: '',
-        text: ''
+        "id": key,
+        "title":'',
+        "author": '',
+        "date": '',
+        "link": '',
+        "text": '',
     });
 
     const handleChange = (e) => {
@@ -21,8 +29,23 @@ function BlogForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setKey(key++)
-        console.log('Form Data Submitted:', formData);
+
+        const postData = {
+            ...formData,
+            "link": selectedPreviewUrl
+        };
+        console.log(postData)
+    
+        axios.post('http://localhost:5005/posts', postData)
+            .then(response => {
+                console.log('Data Posted:', response.data);
+                navigate(`/post/${key}`);
+            })
+            .catch(error => {
+                console.error('Error posting data:', error);
+            });
+    
+        setKey(key + 1);
     };
 
     return (
@@ -59,14 +82,14 @@ function BlogForm() {
             </div>
 
             <div>
-                <label htmlFor="link">Song Link:</label>
-                <input
+            <label>
+            Song Preview URL:
+            <input
                 type="text"
-                id="link"
-                name="link"
-                value={formData.link}
-                onChange={handleChange}
-                />
+                value={previewUrl}
+                readOnly
+            />
+        </label>
             </div>
 
             <div>

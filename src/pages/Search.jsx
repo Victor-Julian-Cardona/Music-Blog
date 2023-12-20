@@ -1,8 +1,8 @@
 import SearchBar from "../components/SpotifySearch";
 
-const Search = () => {
+const Search = ({ setSelectedPreviewUrl } ) => {
     return (
-        <SearchBar />
+        <SearchBar setSelectedPreviewUrl={setSelectedPreviewUrl} />
     )
 }
 

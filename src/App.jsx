@@ -1,58 +1,35 @@
-import { Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { BlogPostsProvider } from './Context';
 import BlogPost from './components/BlogPost';
 import Navbar from './components/Navbar';
 import Sidebar from './components/SideBar';
+import FormPage from './pages/FormPage';
 import Home from './pages/Home';
 import Search from './pages/Search';
 
 function App() {
-
-  // const [projects, setProjects] = useState([]);
-
-  // useEffect(() => {
-  //   axios.get('http://localhost:5005/projects')
-  //     .then(response => {
-  //       setProjects(response.data);
-  //     })
-  //     .catch(err => console.error(err));
-  // }, []);
-
-  //const [postId, setPostId] = useState(1)
+  const [selectedPreviewUrl, setSelectedPreviewUrl] = useState('Please select Song');
 
   return (
     <>
-    <BlogPostsProvider>
+      <BlogPostsProvider>
+        <BrowserRouter>
 
-    <Navbar />
-    <Sidebar />
-    <Home />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/search" element={<Search />} />
-      <Route path="/post/:id" element={<BlogPost />} />
+          <Navbar />
+          <Sidebar />
 
-    </Routes>
+          <Routes>
 
-      {/* <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Search for Track
-            <input type='text' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-        </label>
-        <button type='submit'>Search</button>
-      </form>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/search" element={<Search setSelectedPreviewUrl={setSelectedPreviewUrl} />} />
+            <Route path="/post/:id" element={<BlogPost />} />
+            <Route path="/create" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
 
-      {
-        searchResults.map((result, i) => {
-          return <div key={result.id}>
-            <ReactAudioPlayer src={result.preview_url} controls />
-            <h2>{i}</h2>
-          </div>
-        })
-      }
-      </div> */}
+          </Routes>
+
+        </BrowserRouter>
       </BlogPostsProvider>
     </>
   )

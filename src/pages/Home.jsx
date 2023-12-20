@@ -1,18 +1,19 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import PostsContext from '../Context';
+import BlogPost from '../components/BlogPost';
 
 function Home() {
     const posts = useContext(PostsContext);
+    console.log(posts)
     
-    const mostRecentPost = posts.reduce((prev, current) => {
-        return (prev.id > current.id) ? prev : current;
-    });
+    const mostRecentPost = posts.reduce((latest, post) => {
+        return (latest.id > post.id) ? latest : post;
+    }, posts[0] || {});
 
 return (
     <div>
         <h1>Home</h1>
-        <Link to={`/post/${mostRecentPost.id}`}>Read our latest post: {mostRecentPost.title}</Link>
+        <BlogPost post = {mostRecentPost} />
     </div>
 );
 }

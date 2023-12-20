@@ -1,87 +1,39 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { BlogPostsProvider } from './Context';
-import BlogForm from './components/Form';
+import BlogPost from './components/BlogPost';
 import Navbar from './components/Navbar';
+import Sidebar from './components/SideBar';
+import Home from './pages/Home';
+import Search from './pages/Search';
 
 function App() {
-  // const [spotifyApiToken, setSpotifyApiToken] = useState('')
-  // const [searchTerm, setSearchTerm] = useState('')
-  // const [searchResults, setSearchResults] = useState([])
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   axios.get(`https://api.spotify.com/v1/search?q=${searchTerm}&type=track`, {
-  //     headers: { Authorization: `Bearer ${spotifyApiToken}` }
-  //   })
-  //   .then((results) => {
-  //     console.log("Search results", results.data)
-  //     setSearchResults(results.data.tracks.items)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //   })
-  // }
-  
+  // const [projects, setProjects] = useState([]);
+
   // useEffect(() => {
-  //   axios.post('https://accounts.spotify.com/api/token', { grant_type: 'client_credentials' }, {
-  //     headers: {
-  //       'content-type': 'application/x-www-form-urlencoded',
-  //       'Authorization': 'Basic ' + (Buffer.from(import.meta.env.VITE_SPOTIFY_ID + ':' + import.meta.env.VITE_SPOTIFY_SECRET).toString('base64'))
-  //     }
-  //   })
-  //     .then((response) => {
-  //       console.log("Spotify response", response)
-  //       setSpotifyApiToken(response.data.access_token)
+  //   axios.get('http://localhost:5005/projects')
+  //     .then(response => {
+  //       setProjects(response.data);
   //     })
-  //     .catch((err) => {
-  //       console.log("Spotify/Axios Error ==>", err)
-  //     })
-  // }, [])
+  //     .catch(err => console.error(err));
+  // }, []);
 
-
-
-  const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://localhost:5005/projects')
-      .then(response => {
-        setProjects(response.data);
-      })
-      .catch(err => console.error(err));
-  }, []);
-
-
-  
+  //const [postId, setPostId] = useState(1)
 
   return (
     <>
-    <Router>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/Search" component={Search} />
-        {/* Other routes */}
-      </Switch>
-    </Router>
+    <BlogPostsProvider>
 
-      <BlogPostsProvider>
+    <Navbar />
+    <Sidebar />
+    <Home />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/search" element={<Search />} />
+      <Route path="/post/:id" element={<BlogPost />} />
 
-      <Navbar />
-
-      <div>
-        <p>balls</p>
-      </div>
-
-      <div>
-      {projects.map(project => (
-        <div key={project.id}>
-          <h3>{project.title}</h3>
-          {/* Render other project details */}
-        </div>
-      ))}
-      </div>
+    </Routes>
 
       {/* <div>
       <form onSubmit={handleSubmit}>
@@ -101,7 +53,6 @@ function App() {
         })
       }
       </div> */}
-      <BlogForm />
       </BlogPostsProvider>
     </>
   )

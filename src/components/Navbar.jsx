@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import BlogPostsContext from '../Context';
+import PostsContext from '../Context';
 
 
 function Navbar() {
-    const posts = useContext(BlogPostsContext);
+    const posts = useContext(PostsContext);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -24,6 +24,7 @@ function Navbar() {
                         posts.map(post => (
                             <div key={post.id}>
                                 <h3>{post.title}</h3>
+                                <Link to={`/post/${post.id}`}>Read More</Link>
                             </div>
                             ))
                     )}

@@ -1,24 +1,24 @@
 import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react';
 
-const ProjectsContext = createContext();
+const PostsContext = createContext();
 
 export const BlogPostsProvider = ({ children }) => {
-    const [projects, setProjects] = useState([]);
+    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5005/projects')
+        axios.get('http://localhost:5005/posts')
             .then(response => {
-                setProjects(response.data);
+                setPosts(response.data);
             })
-            .catch(error => console.error('Error fetching projects:', error));
+            .catch(error => console.error('Error fetching posts:', error));
     }, []);
 
     return (
-        <ProjectsContext.Provider value={projects}>
+        <PostsContext.Provider value={posts}>
             {children}
-        </ProjectsContext.Provider>
+        </PostsContext.Provider>
     );
 };
 
-export default ProjectsContext;
+export default PostsContext;

@@ -6,4 +6,4 @@ const Search = () => {
     )
 }
 
-export default NextPage;
+export default Search;

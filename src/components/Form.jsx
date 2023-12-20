@@ -1,29 +1,46 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import PostsContext from '../Context';
+import { useFormData } from '../FormContext';
 
 function BlogForm({ selectedPreviewUrl }) {
-
     const navigate = useNavigate();
+    const posts = useContext(PostsContext);
+    const { formData, setFormData } = useFormData();
+    const [key, setKey] = useState(null);
 
-    const previewUrl = selectedPreviewUrl;
+    useEffect(() => {
+        if (posts.length > 0) {
+            const maxKey = Math.max(...posts.map(post => post.id));
+            setKey(maxKey + 1);
+        }
+    }, [posts]);
 
-    const [key, setKey] = useState(10)
+    const getFormattedDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        let day = today.getDate();
 
-    const [formData, setFormData] = useState({
-        "id": key,
-        "title":'',
-        "author": '',
-        "date": '',
-        "link": '',
-        "text": '',
-    });
+        month = month < 10 ? `0${month}` : month;
+        day = day < 10 ? `0${day}` : day;
+
+        return `${month}-${day}-${year}`;
+    };
+
+    useEffect(() => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            "link": selectedPreviewUrl
+        }));
+    }, [selectedPreviewUrl]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData(prevState => ({
             ...prevState,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         }));
     };
 
@@ -32,9 +49,8 @@ function BlogForm({ selectedPreviewUrl }) {
 
         const postData = {
             ...formData,
-            "link": selectedPreviewUrl
+            "link": formData.isLinkSelected ? formData.link : '' // Set link only if isLinkSelected is true
         };
-        console.log(postData)
     
         axios.post('http://localhost:5005/posts', postData)
             .then(response => {
@@ -51,6 +67,17 @@ function BlogForm({ selectedPreviewUrl }) {
     return (
         <form onSubmit={handleSubmit}>
             <div>
+                <label htmlFor="title">Title:</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div>
                 <label htmlFor="author">Author:</label>
                 <input
                     type="text"
@@ -62,43 +89,33 @@ function BlogForm({ selectedPreviewUrl }) {
             </div>
 
             <div>
-                <label htmlFor="date">Date:</label>
-                <input
-                type="date"
-                id="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                />
+                <Link to="/Search">
+                    <button type="button">
+                        Search for Song
+                    </button>
+                </Link>
             </div>
 
             <div>
-            <Link to="/Search">
-                <button type="button">
-                    Search for Song
-                </button>
-            </Link>
-
-            </div>
-
-            <div>
-            <label>
-            Song Preview URL:
-            <input
-                type="text"
-                value={previewUrl}
-                readOnly
-            />
-        </label>
+                <label htmlFor="isLinkSelected">
+                    Include Song Link:
+                    <input
+                        type="checkbox"
+                        id="isLinkSelected"
+                        name="isLinkSelected"
+                        checked={formData.isLinkSelected}
+                        onChange={handleChange}
+                    />
+                </label>
             </div>
 
             <div>
                 <label htmlFor="text">Text:</label>
                 <textarea
-                id="text"
-                name="text"
-                value={formData.text}
-                onChange={handleChange}
+                    id="text"
+                    name="text"
+                    value={formData.text}
+                    onChange={handleChange}
                 />
             </div>
 

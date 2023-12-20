@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { BlogPostsProvider } from './Context';
+import { FormDataProvider } from './FormContext';
 import BlogPost from './components/BlogPost';
 import Navbar from './components/Navbar';
 import Sidebar from './components/SideBar';
@@ -10,26 +11,28 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 
 function App() {
-  const [selectedPreviewUrl, setSelectedPreviewUrl] = useState('Please select Song');
+  const [selectedPreviewUrl, setSelectedPreviewUrl] = useState('');
 
   return (
     <>
       <BlogPostsProvider>
-        <BrowserRouter>
+        <FormDataProvider>
+          <BrowserRouter>
 
-          <Navbar />
-          <Sidebar />
+            <Navbar />
+            <Sidebar />
 
-          <Routes>
+            <Routes>
 
-            <Route exact path="/" element={<Home />} />
-            <Route path="/search" element={<Search setSelectedPreviewUrl={setSelectedPreviewUrl} />} />
-            <Route path="/post/:id" element={<BlogPost />} />
-            <Route path="/create" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
+              <Route exact path="/" element={<Home />} />
+              <Route path="/search" element={<Search setSelectedPreviewUrl={setSelectedPreviewUrl} />} />
+              <Route path="/post/:id" element={<BlogPost />} />
+              <Route path="/create" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
 
-          </Routes>
+            </Routes>
 
-        </BrowserRouter>
+          </BrowserRouter>
+        </FormDataProvider>
       </BlogPostsProvider>
     </>
   )

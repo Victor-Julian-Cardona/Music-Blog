@@ -60,7 +60,7 @@ const handleSongSelect = (previewUrl) => {
         
             <div>
                 {searchResults.map((result, i) => (
-                    <div className= "searchResults" key={result.id} onClick={() => handleSongSelect(result.preview_url)}>
+                    <div className= "searchResults" key={result.id} onClick={() => handleSongSelect(result)}>
                         {/* <ReactAudioPlayer src={result.preview_url} controls /> */}
                         <h3>{result.name}</h3>
                         <h3>By: {result.artists[0].name}</h3>

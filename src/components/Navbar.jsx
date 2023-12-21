@@ -50,7 +50,7 @@ function Navbar() {
                 <li><Link to="/about">About</Link></li>
                 {prevPost && <li><Link to={`/post/${prevPost.id}`}>Previous</Link></li>}
                 {nextPost && <li><Link to={`/post/${nextPost.id}`}>Next</Link></li>}
-                <li onClick={toggleDropdown}>
+                <li id = "dropDown" onClick={toggleDropdown}>
                     BlogPosts
                     {dropdownOpen && (
                         posts.map(post => (

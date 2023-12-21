@@ -41,6 +41,8 @@ function BlogPost({ post }) {
         return <div>Loading post or post not found...</div>;
     }
 
+    console.log("This is the preview URL", currentPost.link.preview_url)
+    console.log("this is the object", currentPost)
     return (
         <div className="blog-post">
             <div>
@@ -48,7 +50,18 @@ function BlogPost({ post }) {
                 <p className="author">By {currentPost.author}</p>
                 <p className="date">Published on: {new Date(currentPost.date).toLocaleDateString()}</p>
                 <p className='postText'>{currentPost.text}</p>
-                <ReactAudioPlayer src={currentPost.link} controls />
+                {currentPost.link && currentPost.link.artists && currentPost.link.artists.length > 0 && currentPost.link.album && currentPost.link.album.images && currentPost.link.album.images.length > 0 && (
+                    <div className= "searchResults">
+                        {<ReactAudioPlayer key={currentPost.id}
+                            src= {currentPost.link.preview_url}
+                            controls
+                        />}
+                        <h3>{currentPost.link.name}</h3>
+                        <h3>By: {currentPost.link.artists[0].name}</h3>
+                        <h3> Album: {currentPost.link.album.name}</h3>
+                        <img src = {currentPost.link.album.images[0].url} width={100} height={100} />
+                    </div>
+                )}
             </div>
 
             <div>

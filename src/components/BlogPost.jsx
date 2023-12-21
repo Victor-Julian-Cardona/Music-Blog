@@ -1,14 +1,21 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
+import ReactAudioPlayer from 'react-audio-player';
 import { useParams } from 'react-router-dom';
 import PostsContext from '../Context';
 
 function BlogPost({ post }) {
-    const posts = useContext(PostsContext);
-    const [currentPost, setCurrentPost] = useState(post);
+    const {posts} = useContext(PostsContext);
+    const [currentPost, setCurrentPost] = useState(null);
     const { id } = useParams();
 
     console.log(posts)
+
+    useEffect(() => {
+        if (post) {
+            setCurrentPost(post)
+        }
+    }, [post])
 
     useEffect(() => {
 
@@ -20,13 +27,13 @@ function BlogPost({ post }) {
 
     useEffect(() => {
         if (currentPost) {
-            axios.get(`http://localhost:5005/comments?postId=${currentPost.id}`)
+            axios.get(`https://music-blog-mock-backend.adaptable.app/comments?postId=${currentPost.id}`)
                 .then(response => {
                     setComments(response.data);
                 })
                 .catch(err => console.error(err));
         }
-    }, [currentPost]);
+    }, [currentPost, post]);
 
     const [comments, setComments] = useState([]);
 
@@ -41,6 +48,7 @@ function BlogPost({ post }) {
                 <p className="author">By {currentPost.author}</p>
                 <p className="date">Published on: {new Date(currentPost.date).toLocaleDateString()}</p>
                 <p className='postText'>{currentPost.text}</p>
+                <ReactAudioPlayer src={currentPost.link} controls />
             </div>
 
             <div>

@@ -1,19 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PostsContext from '../Context';
 import BlogPost from '../components/BlogPost';
+import Sidebar from '../components/SideBar';
 
 function Home() {
-    const posts = useContext(PostsContext);
-    console.log(posts)
+    const { posts } = useContext(PostsContext);
+    console.log("Line 9 Posts ===>", posts)
+
+    const [mostRecentPost, setMostRecentPost] = useState(null)
     
-    const mostRecentPost = posts.reduce((latest, post) => {
-        return (latest.id > post.id) ? latest : post;
-    }, posts[0] || {});
+    
+    useEffect(() => {
+        
+        if (posts.length > 0) {
+            let getMostRecentPost = posts.reduce((latest, post) => {
+                return (latest.id > post.id) ? latest : post;
+            }, posts[0] || {});
+            setMostRecentPost(getMostRecentPost)
+            console.log("Recent", mostRecentPost)
+        }
+
+    }, [posts])
 
 return (
     <div>
-        <h1>Home</h1>
-        <BlogPost post = {mostRecentPost} />
+        <Sidebar />
+        <BlogPost post={mostRecentPost} />
     </div>
 );
 }

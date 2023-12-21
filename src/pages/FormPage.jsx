@@ -1,9 +1,13 @@
 import BlogForm from "../components/Form";
+import Sidebar from "../components/SideBar";
 
 const FormPage = ({ selectedPreviewUrl }) => {
     console.log(selectedPreviewUrl)
     return (
-        <BlogForm selectedPreviewUrl={selectedPreviewUrl} />
+        <>
+            <Sidebar />
+            <BlogForm selectedPreviewUrl={selectedPreviewUrl} />
+        </>
     )
 }
 

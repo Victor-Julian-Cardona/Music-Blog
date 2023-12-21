@@ -3,9 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { BlogPostsProvider } from './Context';
 import { FormDataProvider } from './FormContext';
-import BlogPost from './components/BlogPost';
 import Navbar from './components/Navbar';
-import Sidebar from './components/SideBar';
+import BlogPostPage from './pages/BlogPostPage';
 import FormPage from './pages/FormPage';
 import Home from './pages/Home';
 import Search from './pages/Search';
@@ -20,14 +19,14 @@ function App() {
           <BrowserRouter>
 
             <Navbar />
-            <Sidebar />
 
             <Routes>
 
               <Route exact path="/" element={<Home />} />
               <Route path="/search" element={<Search setSelectedPreviewUrl={setSelectedPreviewUrl} />} />
-              <Route path="/post/:id" element={<BlogPost />} />
-              <Route path="/create" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
+              <Route path="/post/:id" element={<BlogPostPage />} />
+              <Route path="/create/:id" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
+              <Route path="/update/:id" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
 
             </Routes>
 

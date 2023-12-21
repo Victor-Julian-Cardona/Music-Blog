@@ -10,7 +10,8 @@ export const FormDataProvider = ({ children }) => {
         author: '',
         date: '',
         link: '',
-        text: ''
+        text: '',
+        isLinkSelected: false
     });
 
     return (

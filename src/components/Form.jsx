@@ -30,7 +30,7 @@ function BlogForm({ selectedPreviewUrl }) {
 
 
     useEffect(() => {
-        if (id && id != key) {
+        if (id != key) {
             const postToUpdate = posts.find(post => post.id.toString() === id);
             if (postToUpdate) {
                 setFormData({
@@ -38,7 +38,7 @@ function BlogForm({ selectedPreviewUrl }) {
                     author: postToUpdate.author || '',
                     text: postToUpdate.text || '',
                     link: postToUpdate.link || '',
-                    isLinkSelected: typeof postToUpdate.isLinkSelected === 'boolean' ? postToUpdate.isLinkSelected : false,
+                    isLinkSelected: true,
                     date: postToUpdate.date || getFormattedDate(),
                 });
             }
@@ -93,7 +93,7 @@ function BlogForm({ selectedPreviewUrl }) {
             "link": formData.isLinkSelected ? formData.link : ''
         };
 
-        if (id && id != key) {
+        if (id != key) {
 
             axios.put(`https://music-blog-mock-backend.adaptable.app/posts/${id}`, {
                 ...formData,
@@ -175,7 +175,7 @@ function BlogForm({ selectedPreviewUrl }) {
 
             <div>
             <label htmlFor="isLinkSelected">
-                Include Song Link:
+                Song is Selected:
                 <input
                     type="checkbox"
                     id="isLinkSelected"

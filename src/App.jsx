@@ -4,6 +4,7 @@ import './App.css';
 import { BlogPostsProvider } from './Context';
 import { FormDataProvider } from './FormContext';
 import Navbar from './components/Navbar';
+import About from './pages/About';
 import BlogPostPage from './pages/BlogPostPage';
 import FormPage from './pages/FormPage';
 import Home from './pages/Home';
@@ -25,6 +26,7 @@ function App() {
               <Route exact path="/" element={<Home />} />
               <Route path="/search" element={<Search setSelectedPreviewUrl={setSelectedPreviewUrl} />} />
               <Route path="/post/:id" element={<BlogPostPage />} />
+              <Route path="/about" element={<About />} />
               <Route path="/create/:id" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
               <Route path="/update/:id" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
 

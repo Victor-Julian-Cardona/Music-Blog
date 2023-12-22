@@ -52,10 +52,11 @@ function BlogPost({ post }) {
                 <p className='postText'>{currentPost.text}</p>
                 {currentPost.link && currentPost.link.artists && currentPost.link.artists.length > 0 && currentPost.link.album && currentPost.link.album.images && currentPost.link.album.images.length > 0 && (
                     <div className= "searchResults">
-                        {<ReactAudioPlayer key={currentPost.id}
+                    {currentPost.link.preview_url &&
+                        (<ReactAudioPlayer key={currentPost.id}
                             src= {currentPost.link.preview_url}
                             controls
-                        />}
+                        />)}
                         <h3>{currentPost.link.name}</h3>
                         <h3>By: {currentPost.link.artists[0].name}</h3>
                         <h3> Album: {currentPost.link.album.name}</h3>

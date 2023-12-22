@@ -88,8 +88,13 @@ function BlogForm({ selectedPreviewUrl }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        const postTitle = formData.title.trim() ? formData.title : "No title"
+        const postText = formData.author.trim() ? formData.author : "No author"
+
         const postData = {
             ...formData,
+            title: postTitle,
+            author: postText,
             "link": formData.isLinkSelected ? formData.link : ''
         };
 
@@ -97,7 +102,7 @@ function BlogForm({ selectedPreviewUrl }) {
 
             axios.put(`https://music-blog-mock-backend.adaptable.app/posts/${id}`, {
                 ...formData,
-                id: id,  // Use the existing post's id
+                id: id,
                 "link": formData.isLinkSelected ? formData.link : ''
             })
                 .then(response => {
@@ -137,8 +142,6 @@ function BlogForm({ selectedPreviewUrl }) {
                 console.error('Error posting data:', error);
             })
             
-    
-        //setKey(key + 1);
     }};
 
     return (

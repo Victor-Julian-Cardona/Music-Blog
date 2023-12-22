@@ -47,7 +47,7 @@ function BlogPost({ post }) {
         <div className="blog-post">
             <div>
                 <h2>{currentPost.title}</h2>
-                <p className="author">By {currentPost.author}</p>
+                <p className="author">By: {currentPost.author}</p>
                 <p className="date">Published on: {new Date(currentPost.date).toLocaleDateString()}</p>
                 <p className='postText'>{currentPost.text}</p>
                 {currentPost.link && currentPost.link.artists && currentPost.link.artists.length > 0 && currentPost.link.album && currentPost.link.album.images && currentPost.link.album.images.length > 0 && (

@@ -2,13 +2,28 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import PostsContext from '../Context';
+import { useFormData } from '../FormContext';
 
-function Sidebar() {
+function Sidebar({ setKey }) {
     const { posts } = useContext(PostsContext);
     const { id } = useParams();
     const mostRecentPostId = Math.max(...posts?.map(p => p.id));
     const isViewingMostRecentPost = id && parseInt(id, 10) === mostRecentPostId;
     const navigate = useNavigate();  // Use the useNavigate hook here
+    const { setFormData } = useFormData();
+
+    const resetForm = () => {
+        setKey(null)
+        setFormData({
+            title: '',
+            author: '',
+            text: '',
+            link: '',
+            isLinkSelected: false,
+            date: ''
+        })
+
+    }
 
     const handleDelete = (e) => {
         e.preventDefault();
@@ -25,7 +40,7 @@ function Sidebar() {
 
     return (
         <div className="sidebar">
-            <Link id='item' to={`/create/${mostRecentPostId + 1}`} className="button-link">Create Post</Link>
+            <Link onClick={resetForm} id='item' to={`/create/${mostRecentPostId + 1}`} className="button-link">Create Post</Link>
 
             {id && !isViewingMostRecentPost && (
                 <>

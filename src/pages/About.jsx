@@ -1,6 +1,9 @@
 const AboutPage = () => {
     return (
-        <div>AboutPage</div>
+        <div>
+            <h1>About</h1>
+            <p>Hi I'm Victor this is my music blog. I hope you like it.</p>
+        </div>
     )
 }
 

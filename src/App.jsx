@@ -11,6 +11,7 @@ import Search from './pages/Search';
 
 function App() {
   const [selectedPreviewUrl, setSelectedPreviewUrl] = useState('');
+      const [thisKey, setKey] = useState(null);
 
   return (
     <>
@@ -24,9 +25,9 @@ function App() {
 
               <Route exact path="/" element={<Home />} />
               <Route path="/search" element={<Search setSelectedPreviewUrl={setSelectedPreviewUrl} />} />
-              <Route path="/post/:id" element={<BlogPostPage />} />
-              <Route path="/create/:id" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
-              <Route path="/update/:id" element={<FormPage selectedPreviewUrl={selectedPreviewUrl} />} />
+              <Route path="/post/:id" element={<BlogPostPage setKey={setKey} />} />
+              <Route path="/create/:id" element={<FormPage thisKey={thisKey} setKey={setKey} selectedPreviewUrl={selectedPreviewUrl} />} />
+              <Route path="/update/:id" element={<FormPage thisKey={thisKey} setKey={setKey} selectedPreviewUrl={selectedPreviewUrl} />} />
 
             </Routes>
 

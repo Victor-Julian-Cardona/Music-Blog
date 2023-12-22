@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import PostsContext from '../Context';
 import { useFormData } from '../FormContext';
@@ -14,11 +14,11 @@ const initialFormData = {
 };
 
 
-function BlogForm({ selectedPreviewUrl }) {
+function BlogForm({ selectedPreviewUrl, key, setKey }) {
     const navigate = useNavigate();
     const { posts, setPosts }= useContext(PostsContext);
     const { formData, setFormData } = useFormData();
-    const [key, setKey] = useState(null);
+    // const [key, setKey] = useState(null);
     const { id } = useParams();
     console.log(id)
 
@@ -33,12 +33,14 @@ function BlogForm({ selectedPreviewUrl }) {
         if (id && id != key) {
             const postToUpdate = posts.find(post => post.id.toString() === id);
             if (postToUpdate) {
+                console.log("Post to update:", postToUpdate)
                 setFormData({
                     title: postToUpdate.title || '',
                     author: postToUpdate.author || '',
                     text: postToUpdate.text || '',
                     link: postToUpdate.link || '',
-                    isLinkSelected: typeof postToUpdate.isLinkSelected === 'boolean' ? postToUpdate.isLinkSelected : false,
+                    isLinkSelected: postToUpdate.isLinkSelected ,
+                    // isLinkSelected: typeof postToUpdate.isLinkSelected === 'boolean' ? postToUpdate.isLinkSelected : false,
                     date: postToUpdate.date || getFormattedDate(),
                 });
             }
@@ -68,11 +70,12 @@ function BlogForm({ selectedPreviewUrl }) {
     };
 
     useEffect(() => {
+        console.log("LINE 73!!!!!!!!!!")
         setFormData(prevFormData => ({
             ...prevFormData,
             "link": selectedPreviewUrl,
             "date": getFormattedDate(),
-            "isLinkSelected": !!selectedPreviewUrl
+            "isLinkSelected": !!selectedPreviewUrl?.name
         }));
     }, [selectedPreviewUrl, setFormData]);
     
@@ -85,6 +88,14 @@ function BlogForm({ selectedPreviewUrl }) {
         }));
     };
 
+    const handleCheck = (e) => {
+        setFormData(prevState => ({
+            ...prevState,
+            ["isLinkSelected"]: e.target.checked,
+            ["link"]: e.target.checked ? prevState.link : ''
+        }))
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -95,10 +106,12 @@ function BlogForm({ selectedPreviewUrl }) {
 
         if (id && id != key) {
 
+            console.log("This is updating post", postData, formData)
+
             axios.put(`https://music-blog-mock-backend.adaptable.app/posts/${id}`, {
                 ...formData,
                 id: id,  // Use the existing post's id
-                "link": formData.isLinkSelected ? formData.link : ''
+                // "link": formData.isLinkSelected ? formData.link : ''
             })
                 .then(response => {
                     console.log('Post Updated:', response.data);
@@ -128,10 +141,10 @@ function BlogForm({ selectedPreviewUrl }) {
                 let newPosts = [...posts, response.data]
                 setPosts(newPosts)
                 resetForm();
-                return true
+                return response
             })
             .then(() => {
-                navigate(`/post/${key}`);
+                navigate(`/post/${response.data.id}`);
             })
             .catch(error => {
                 console.error('Error posting data:', error);
@@ -181,7 +194,8 @@ function BlogForm({ selectedPreviewUrl }) {
                     id="isLinkSelected"
                     name="isLinkSelected"
                     checked={formData.isLinkSelected}
-                    readOnly
+                    onChange={handleCheck}
+                    // readOnly
                 />
             </label>
             </div>
